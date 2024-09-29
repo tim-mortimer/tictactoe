@@ -63,6 +63,22 @@ class TicTacToeTest {
         }
     }
 
+    @Test
+    fun `a player wins if they play three vertical positions`() {
+        for (x in 0..2) {
+            var game = Game()
+            game = game.makeMove(Player.NAUGHTS, position(x, 0)).andThen()
+            game = game.makeMove(Player.CROSSES, position((x + 1) % 3, 0)).andThen()
+            game = game.makeMove(Player.NAUGHTS, position(x, 1)).andThen()
+            game = game.makeMove(Player.CROSSES, position((x + 1) % 3, 1)).andThen()
+            assertEquals(GameStatus.IN_PROGRESS, game.status())
+            assertNull(game.winner)
+            game = game.makeMove(Player.NAUGHTS, position(x, 2)).andThen()
+            assertEquals(GameStatus.WON, game.status())
+            assertEquals(Player.NAUGHTS, game.winner)
+        }
+    }
+
     @TestFactory
     fun `players cannot make moves on the outside edge of the 3 x 3 grid`(): MutableList<DynamicTest> {
         val testCases: MutableList<DynamicTest> = mutableListOf()

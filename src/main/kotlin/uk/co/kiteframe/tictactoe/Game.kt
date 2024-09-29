@@ -24,7 +24,11 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
     private fun isWinningMove(move: Move): Boolean {
         val currentMoves = moves + move
         val player = move.player
-        return currentMoves.containsHorizontalWin(player)
+        return when {
+            currentMoves.containsHorizontalWin(player) -> true
+            currentMoves.containsVerticalWin(player) -> true
+            else -> false
+        }
     }
 
     private fun List<Move>.containsHorizontalWin(player: Player): Boolean {
@@ -34,6 +38,23 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
                         Move(player, Position(0, y)!!),
                         Move(player, Position(1, y)!!),
                         Move(player, Position(2, y)!!)
+                    )
+                )
+            ) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    private fun List<Move>.containsVerticalWin(player: Player): Boolean {
+        for (x in 0..2) {
+            if (containsAll(
+                    listOf(
+                        Move(player, Position(x, 0)!!),
+                        Move(player, Position(x, 1)!!),
+                        Move(player, Position(x, 2)!!)
                     )
                 )
             ) {
