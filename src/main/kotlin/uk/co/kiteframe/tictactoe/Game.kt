@@ -10,6 +10,7 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
         return when {
             moves.isEmpty() -> GameStatus.NOT_STARTED
             winner != null -> GameStatus.WON
+            moves.size == 9 -> GameStatus.DRAW
             else -> GameStatus.IN_PROGRESS
         }
     }
@@ -94,7 +95,8 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
     enum class GameStatus {
         NOT_STARTED,
         IN_PROGRESS,
-        WON
+        WON,
+        DRAW
     }
 
     sealed interface GameError {

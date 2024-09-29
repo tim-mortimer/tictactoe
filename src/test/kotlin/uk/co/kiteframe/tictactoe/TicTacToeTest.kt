@@ -128,6 +128,23 @@ class TicTacToeTest {
             .failsWith(GameError.GameAlreadyWonError(Player.NAUGHTS))
     }
 
+    @Test
+    fun `after nine non-winning moves the game is results in a draw`() {
+        val game = Game().makeMove(Player.NAUGHTS, position(0, 0)).andThen()
+            .makeMove(Player.CROSSES, position(1, 0)).andThen()
+            .makeMove(Player.NAUGHTS, position(0, 1)).andThen()
+            .makeMove(Player.CROSSES, position(1, 1)).andThen()
+            .makeMove(Player.NAUGHTS, position(1, 2)).andThen()
+            .makeMove(Player.CROSSES, position(0, 2)).andThen()
+            .makeMove(Player.NAUGHTS, position(2, 2)).andThen()
+            .makeMove(Player.CROSSES, position(2, 1)).andThen()
+            .makeMove(Player.NAUGHTS, position(2, 0))
+
+        assertTrue(game.isRight())
+        assertEquals(GameStatus.DRAW, game.getOrNull()?.status())
+        assertNull(game.getOrNull()?.winner)
+    }
+
     @TestFactory
     fun `players cannot make moves on the outside edge of the 3 x 3 grid`(): MutableList<DynamicTest> {
         val testCases: MutableList<DynamicTest> = mutableListOf()
