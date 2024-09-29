@@ -15,6 +15,7 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
     }
 
     fun makeMove(player: Player, position: Position): Either<GameError, Game> = when {
+        winner != null -> GameError.GameAlreadyWonError(winner).left()
         moves.isNotEmpty() && moves.last().player == player -> GameError.RepeatedTurnError(player).left()
         moves.map(Move::position).contains(position) -> GameError.AlreadyPlayedPositionError(player, position).left()
         isWinningMove(Move(player, position)) -> Game(moves + Move(player, position), player).right()
@@ -98,6 +99,7 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
 
     sealed interface GameError {
         data class RepeatedTurnError(val player: Player) : GameError
+        data class GameAlreadyWonError(val winner: Player) : GameError
         data class AlreadyPlayedPositionError(val player: Player, val position: Position) : GameError
     }
 }

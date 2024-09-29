@@ -117,6 +117,17 @@ class TicTacToeTest {
         assertEquals(Player.NAUGHTS, game.winner)
     }
 
+    @Test
+    fun `a player cannot play a turn on an already won game`() {
+        Game().makeMove(Player.NAUGHTS, position(0, 2)).andThen()
+            .makeMove(Player.CROSSES, position(0, 1)).andThen()
+            .makeMove(Player.NAUGHTS, position(1, 1)).andThen()
+            .makeMove(Player.CROSSES, position(1, 2)).andThen()
+            .makeMove(Player.NAUGHTS, position(2, 0)).andThen()
+            .makeMove(Player.CROSSES, position(0, 0))
+            .failsWith(GameError.GameAlreadyWonError(Player.NAUGHTS))
+    }
+
     @TestFactory
     fun `players cannot make moves on the outside edge of the 3 x 3 grid`(): MutableList<DynamicTest> {
         val testCases: MutableList<DynamicTest> = mutableListOf()
