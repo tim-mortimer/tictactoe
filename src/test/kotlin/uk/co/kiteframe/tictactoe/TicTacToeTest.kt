@@ -47,6 +47,22 @@ class TicTacToeTest {
             .failsWith(GameError.AlreadyPlayedPositionError(Player.CROSSES, position(0, 0)))
     }
 
+    @Test
+    fun `a player wins if they play three horizontal positions`() {
+        for (y in 0..2) {
+            var game = Game()
+            game = game.makeMove(Player.NAUGHTS, position(0, y)).andThen()
+            game = game.makeMove(Player.CROSSES, position(0, (y + 1) % 3)).andThen()
+            game = game.makeMove(Player.NAUGHTS, position(1, y)).andThen()
+            game = game.makeMove(Player.CROSSES, position(1, (y + 1) % 3)).andThen()
+            assertEquals(GameStatus.IN_PROGRESS, game.status())
+            assertNull(game.winner)
+            game = game.makeMove(Player.NAUGHTS, position(2, y)).andThen()
+            assertEquals(GameStatus.WON, game.status())
+            assertEquals(Player.NAUGHTS, game.winner)
+        }
+    }
+
     @TestFactory
     fun `players cannot make moves on the outside edge of the 3 x 3 grid`(): MutableList<DynamicTest> {
         val testCases: MutableList<DynamicTest> = mutableListOf()
