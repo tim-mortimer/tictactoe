@@ -94,6 +94,20 @@ class TicTacToeTest {
         assertEquals(Player.NAUGHTS, game.winner)
     }
 
+    @Test
+    fun `a player wins if they play all three backward diagonal positions`() {
+        var game = Game()
+        game = game.makeMove(Player.NAUGHTS, position(0, 2)).andThen()
+        game = game.makeMove(Player.CROSSES, position(0, 1)).andThen()
+        game = game.makeMove(Player.NAUGHTS, position(1, 1)).andThen()
+        game = game.makeMove(Player.CROSSES, position(1, 2)).andThen()
+        assertEquals(GameStatus.IN_PROGRESS, game.status())
+        assertNull(game.winner)
+        game = game.makeMove(Player.NAUGHTS, position(2, 0)).andThen()
+        assertEquals(GameStatus.WON, game.status())
+        assertEquals(Player.NAUGHTS, game.winner)
+    }
+
     @TestFactory
     fun `players cannot make moves on the outside edge of the 3 x 3 grid`(): MutableList<DynamicTest> {
         val testCases: MutableList<DynamicTest> = mutableListOf()

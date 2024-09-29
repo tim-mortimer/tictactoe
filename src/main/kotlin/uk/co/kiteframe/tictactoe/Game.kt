@@ -67,7 +67,7 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
     }
 
     private fun List<Move>.containsDiagonalWin(player: Player): Boolean {
-        return containsForwardDiagonalWin(player)
+        return containsForwardDiagonalWin(player) || containsBackwardDiagonalWin(player)
     }
 
     private fun List<Move>.containsForwardDiagonalWin(player: Player) =
@@ -76,6 +76,15 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
                 Move(player, Position(0, 0)!!),
                 Move(player, Position(1, 1)!!),
                 Move(player, Position(2, 2)!!)
+            )
+        )
+
+    private fun List<Move>.containsBackwardDiagonalWin(player: Player) =
+        containsAll(
+            listOf(
+                Move(player, Position(0, 2)!!),
+                Move(player, Position(1, 1)!!),
+                Move(player, Position(2, 0)!!)
             )
         )
 
