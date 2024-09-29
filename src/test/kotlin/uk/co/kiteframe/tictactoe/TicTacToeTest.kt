@@ -51,14 +51,16 @@ class TicTacToeTest {
     @Test
     fun `a player wins if they play three horizontal positions`() {
         for (y in 0..2) {
-            var game = Game()
-            game = game.makeMove(Player.NAUGHTS, position(0, y)).andThen()
-            game = game.makeMove(Player.CROSSES, position(0, (y + 1) % 3)).andThen()
-            game = game.makeMove(Player.NAUGHTS, position(1, y)).andThen()
-            game = game.makeMove(Player.CROSSES, position(1, (y + 1) % 3)).andThen()
+            var game = Game().makeMove(Player.NAUGHTS, position(0, y)).andThen()
+                .makeMove(Player.CROSSES, position(0, (y + 1) % 3)).andThen()
+                .makeMove(Player.NAUGHTS, position(1, y)).andThen()
+                .makeMove(Player.CROSSES, position(1, (y + 1) % 3)).andThen()
+
             assertEquals(GameStatus.IN_PROGRESS, game.status())
             assertNull(game.winner)
+
             game = game.makeMove(Player.NAUGHTS, position(2, y)).andThen()
+
             assertEquals(GameStatus.WON, game.status())
             assertEquals(Player.NAUGHTS, game.winner)
         }
@@ -67,14 +69,16 @@ class TicTacToeTest {
     @Test
     fun `a player wins if they play three vertical positions`() {
         for (x in 0..2) {
-            var game = Game()
-            game = game.makeMove(Player.NAUGHTS, position(x, 0)).andThen()
-            game = game.makeMove(Player.CROSSES, position((x + 1) % 3, 0)).andThen()
-            game = game.makeMove(Player.NAUGHTS, position(x, 1)).andThen()
-            game = game.makeMove(Player.CROSSES, position((x + 1) % 3, 1)).andThen()
+            var game = Game().makeMove(Player.NAUGHTS, position(x, 0)).andThen()
+                .makeMove(Player.CROSSES, position((x + 1) % 3, 0)).andThen()
+                .makeMove(Player.NAUGHTS, position(x, 1)).andThen()
+                .makeMove(Player.CROSSES, position((x + 1) % 3, 1)).andThen()
+
             assertEquals(GameStatus.IN_PROGRESS, game.status())
             assertNull(game.winner)
+
             game = game.makeMove(Player.NAUGHTS, position(x, 2)).andThen()
+
             assertEquals(GameStatus.WON, game.status())
             assertEquals(Player.NAUGHTS, game.winner)
         }
@@ -82,14 +86,16 @@ class TicTacToeTest {
 
     @Test
     fun `a player wins if they play all three forward diagonal positions`() {
-        var game = Game()
-        game = game.makeMove(Player.NAUGHTS, position(0, 0)).andThen()
-        game = game.makeMove(Player.CROSSES, position(0, 1)).andThen()
-        game = game.makeMove(Player.NAUGHTS, position(1, 1)).andThen()
-        game = game.makeMove(Player.CROSSES, position(1, 2)).andThen()
+        var game = Game().makeMove(Player.NAUGHTS, position(0, 0)).andThen()
+            .makeMove(Player.CROSSES, position(0, 1)).andThen()
+            .makeMove(Player.NAUGHTS, position(1, 1)).andThen()
+            .makeMove(Player.CROSSES, position(1, 2)).andThen()
+
         assertEquals(GameStatus.IN_PROGRESS, game.status())
         assertNull(game.winner)
+
         game = game.makeMove(Player.NAUGHTS, position(2, 2)).andThen()
+
         assertEquals(GameStatus.WON, game.status())
         assertEquals(Player.NAUGHTS, game.winner)
     }
@@ -97,13 +103,16 @@ class TicTacToeTest {
     @Test
     fun `a player wins if they play all three backward diagonal positions`() {
         var game = Game()
-        game = game.makeMove(Player.NAUGHTS, position(0, 2)).andThen()
-        game = game.makeMove(Player.CROSSES, position(0, 1)).andThen()
-        game = game.makeMove(Player.NAUGHTS, position(1, 1)).andThen()
-        game = game.makeMove(Player.CROSSES, position(1, 2)).andThen()
+            .makeMove(Player.NAUGHTS, position(0, 2)).andThen()
+            .makeMove(Player.CROSSES, position(0, 1)).andThen()
+            .makeMove(Player.NAUGHTS, position(1, 1)).andThen()
+            .makeMove(Player.CROSSES, position(1, 2)).andThen()
+
         assertEquals(GameStatus.IN_PROGRESS, game.status())
         assertNull(game.winner)
+
         game = game.makeMove(Player.NAUGHTS, position(2, 0)).andThen()
+
         assertEquals(GameStatus.WON, game.status())
         assertEquals(Player.NAUGHTS, game.winner)
     }
