@@ -27,6 +27,7 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
         return when {
             currentMoves.containsHorizontalWin(player) -> true
             currentMoves.containsVerticalWin(player) -> true
+            currentMoves.containsDiagonalWin(player) -> true
             else -> false
         }
     }
@@ -64,6 +65,19 @@ class Game(private val moves: List<Move> = emptyList(), val winner: Player? = nu
 
         return false
     }
+
+    private fun List<Move>.containsDiagonalWin(player: Player): Boolean {
+        return containsForwardDiagonalWin(player)
+    }
+
+    private fun List<Move>.containsForwardDiagonalWin(player: Player) =
+        containsAll(
+            listOf(
+                Move(player, Position(0, 0)!!),
+                Move(player, Position(1, 1)!!),
+                Move(player, Position(2, 2)!!)
+            )
+        )
 
     data class Move(val player: Player, val position: Position)
 

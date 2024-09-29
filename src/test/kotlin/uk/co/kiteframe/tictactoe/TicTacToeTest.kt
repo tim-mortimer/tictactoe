@@ -6,7 +6,8 @@ import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import uk.co.kiteframe.tictactoe.Game.*
+import uk.co.kiteframe.tictactoe.Game.GameError
+import uk.co.kiteframe.tictactoe.Game.GameStatus
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -77,6 +78,20 @@ class TicTacToeTest {
             assertEquals(GameStatus.WON, game.status())
             assertEquals(Player.NAUGHTS, game.winner)
         }
+    }
+
+    @Test
+    fun `a player wins if they play all three forward diagonal positions`() {
+        var game = Game()
+        game = game.makeMove(Player.NAUGHTS, position(0, 0)).andThen()
+        game = game.makeMove(Player.CROSSES, position(0, 1)).andThen()
+        game = game.makeMove(Player.NAUGHTS, position(1, 1)).andThen()
+        game = game.makeMove(Player.CROSSES, position(1, 2)).andThen()
+        assertEquals(GameStatus.IN_PROGRESS, game.status())
+        assertNull(game.winner)
+        game = game.makeMove(Player.NAUGHTS, position(2, 2)).andThen()
+        assertEquals(GameStatus.WON, game.status())
+        assertEquals(Player.NAUGHTS, game.winner)
     }
 
     @TestFactory
