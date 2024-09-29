@@ -6,8 +6,7 @@ import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import uk.co.kiteframe.tictactoe.Game.GameStatus
-import uk.co.kiteframe.tictactoe.Game.RepeatedTurnError
+import uk.co.kiteframe.tictactoe.Game.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
@@ -37,7 +36,15 @@ class TicTacToeTest {
         Game().makeMove(player, position(0, 0))
             .andThen()
             .makeMove(player, position(1, 0))
-            .failsWith(RepeatedTurnError(player))
+            .failsWith(GameError.RepeatedTurnError(player))
+    }
+
+    @Test
+    fun `a turn cannot use an already placed position`() {
+        Game().makeMove(Player.NAUGHTS, position(0, 0))
+            .andThen()
+            .makeMove(Player.CROSSES, position(0, 0))
+            .failsWith(GameError.AlreadyPlayedPositionError(Player.CROSSES, position(0, 0)))
     }
 
     @TestFactory
@@ -75,14 +82,14 @@ class TicTacToeTest {
 
     private fun position(x: Int, y: Int): Position = Position(x, y)!!
 
-    fun Either<Game.GameError, Game>.andThen(): Game {
+    fun Either<GameError, Game>.andThen(): Game {
         return when {
             this.isLeft() -> throw IllegalStateException("Can't proceed after a failed move")
             else -> this.getOrElse { throw IllegalStateException("Game cannot be null") }
         }
     }
 
-    fun Either<Game.GameError, Game>.failsWith(error: Game.GameError) {
+    fun Either<GameError, Game>.failsWith(error: GameError) {
         assertTrue(this.isLeft())
         assertEquals(error, this.leftOrNull())
     }
