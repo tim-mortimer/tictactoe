@@ -171,7 +171,7 @@ class TicTacToeTest {
     }
 
     @Test
-    fun `players can not make moves well outside of the 3 x 3 grid`() {
+    fun `players cannot make moves well outside of the 3 x 3 grid`() {
         assertNull(Position(5, 10))
         assertNull(Position(-3, -6))
         assertNull(Position(-6, 9))
